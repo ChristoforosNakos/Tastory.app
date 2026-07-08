@@ -1,0 +1,27 @@
+<header class="header" th:fragment="navbar"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="header-content">
+        <div class="header-left">
+            <a class="brand" th:href="@{/}">🍕 Tastory</a>
+        </div>
+        <div class="header-right">
+            <nav class="nav-menu">
+                <a th:href="@{/restaurants}"><i class="fas fa-store"></i> Εστιατόρια</a>
+
+                <a sec:authorize="isAuthenticated()" th:href="@{/my-orders}">
+                    <i class="fas fa-receipt"></i> Οι παραγγελίες μου</a>
+
+                <span sec:authorize="isAuthenticated()" class="user">
+                    <i class="fas fa-user"></i> <span sec:authentication="name">user</span></span>
+
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit"><i class="fas fa-sign-out-alt"></i> Αποσύνδεση</button>
+                </form>
+
+                <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
+                    <i class="fas fa-sign-in-alt"></i> Σύνδεση</a>
+            </nav>
+        </div>
+    </div>
+</header>

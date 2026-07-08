@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<h1>User Management</h1>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Action</th>
+    </tr>
+    <tr th:each="u : ${users}">
+        <td th:text="${u.id}"></td>
+        <td th:text="${u.email}"></td>
+        <td th:text="${u.name}"></td>
+        <td th:text="${u.role}"></td>
+        <td>
+            <form th:if="${u.role.name() == 'CUSTOMER'}"
+                  th:action="@{/admin/users/{id}/promote(id=${u.id})}"
+                  method="post">
+                <button type="submit">Promote to Owner</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<p><a th:href="@{/}">← Home</a></p>
+</body>
+</html>

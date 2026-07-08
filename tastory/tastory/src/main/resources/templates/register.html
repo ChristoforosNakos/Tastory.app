@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tastory - Εγγραφή</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="auth-wrap">
+    <div class="auth-card">
+        <h2><i class="fas fa-user-plus"></i> Δημιουργία λογαριασμού</h2>
+
+        <form th:action="@{/register}" th:object="${registerDto}" method="post">
+            <label>Όνομα</label>
+            <input type="text" th:field="*{name}" required>
+
+            <label>Email</label>
+            <input type="email" th:field="*{email}" required>
+
+            <label>Κωδικός</label>
+            <input type="password" th:field="*{password}" required>
+
+            <label>Εγγραφή ως</label>
+            <select th:field="*{role}">
+                <option th:value="CUSTOMER">Πελάτης</option>
+                <option th:value="RESTAURANT_OWNER">Ιδιοκτήτης εστιατορίου</option>
+            </select>
+
+            <button type="submit" class="btn-block"><i class="fas fa-user-plus"></i> Εγγραφή</button>
+        </form>
+
+        <p class="auth-link">Έχεις ήδη λογαριασμό; <a th:href="@{/login}">Σύνδεση</a></p>
+    </div>
+</main>
+</body>
+</html>

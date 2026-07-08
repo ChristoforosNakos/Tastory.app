@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Μενού</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="main-container">
+    <h1>Μενού</h1>
+
+    <p th:if="${param.ordered != null}" class="alert alert-success">
+        <i class="fas fa-check-circle"></i> Η παραγγελία σου στάλθηκε!</p>
+    <p th:if="${param.error != null}" class="alert alert-error">
+        <i class="fas fa-exclamation-triangle"></i> Διάλεξε τουλάχιστον ένα προϊόν για να παραγγείλεις.</p>
+
+    <p th:if="${#lists.isEmpty(products)}">Δεν υπάρχουν προϊόντα ακόμα.</p>
+
+    <form th:action="@{/restaurants/{id}/orders(id=${restaurantId})}" method="post">
+        <div class="menu-list">
+            <div class="menu-item" th:each="p : ${products}">
+                <div class="menu-info">
+                    <h3 th:text="${p.name}">Όνομα</h3>
+                    <p class="menu-desc" th:text="${p.description}">Περιγραφή</p>
+                    <span class="menu-price" th:text="${p.price} + ' €'">0 €</span>
+                </div>
+                <div class="menu-actions">
+                    <label class="qty">Ποσότητα
+                        <input type="number" min="0" value="0" th:name="'quantities[' + ${p.id} + ']'"/>
+                    </label>
+                    <div class="owner-actions" sec:authorize="hasRole('RESTAURANT_OWNER')">
+                        <a class="icon-link"
+                           th:href="@{/restaurants/{rid}/products/{pid}/edit(rid=${restaurantId}, pid=${p.id})}">
+                            <i class="fas fa-pen"></i> Edit</a>
+                        <form th:action="@{/restaurants/{rid}/products/{pid}/delete(rid=${restaurantId}, pid=${p.id})}"
+                              method="post" style="display:inline;"
+                              onsubmit="return confirm('Σίγουρα θέλεις να το σβήσεις;');">
+                            <button type="submit" class="btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p th:unless="${#lists.isEmpty(products)}">
+            <button type="submit" class="btn-order"><i class="fas fa-shopping-cart"></i> Παραγγελία</button>
+        </p>
+    </form>
+
+    <div class="menu-footer">
+        <a sec:authorize="hasRole('RESTAURANT_OWNER')" class="btn-outline"
+           th:href="@{/restaurants/{id}/products/new(id=${restaurantId})}"><i class="fas fa-plus"></i> Προσθήκη προϊόντος</a>
+        <a sec:authorize="hasRole('RESTAURANT_OWNER')" class="btn-outline"
+           th:href="@{/restaurants/{id}/orders(id=${restaurantId})}"><i class="fas fa-clipboard-list"></i> Παραγγελίες εστιατορίου</a>
+        <a class="btn-outline" th:href="@{/restaurants}"><i class="fas fa-arrow-left"></i> Εστιατόρια</a>
+    </div>
+</main>
+</body>
+</html>

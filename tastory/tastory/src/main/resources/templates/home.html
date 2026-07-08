@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tastory</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="main-container">
+    <h1>Καλώς ήρθες στο Tastory! 🍽️</h1>
+    <p>Η εφαρμογή σου είναι έτοιμη. Δες τα εστιατόρια και παράγγειλε.</p>
+    <p><a class="hero-search-btn" style="border-radius:6px;padding:12px 24px;"
+          th:href="@{/restaurants}">Δες τα εστιατόρια</a></p>
+</main>
+</body>
+</html>

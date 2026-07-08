@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Παραγγελίες εστιατορίου</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="main-container">
+    <h1>Παραγγελίες εστιατορίου</h1>
+
+    <p th:if="${#lists.isEmpty(orders)}">Δεν υπάρχουν παραγγελίες ακόμα.</p>
+
+    <table th:unless="${#lists.isEmpty(orders)}">
+        <tr>
+            <th>#</th><th>Ημερομηνία</th><th>Πελάτης</th><th>Status</th>
+            <th>Σύνολο</th><th>Περιεχόμενο</th><th>Ενέργεια</th>
+        </tr>
+        <tr th:each="o : ${orders}">
+            <td th:text="${o.id}"></td>
+            <td th:text="${#temporals.format(o.createdAt,'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${o.user.email}"></td>
+            <td><span class="badge" th:classappend="'badge-' + ${#strings.toLowerCase(o.status)}"
+                      th:text="${o.status}"></span></td>
+            <td th:text="${#numbers.formatDecimal(o.total,1,2)} + ' €'"></td>
+            <td>
+                <ul>
+                    <li th:each="item : ${o.items}"
+                        th:text="${item.quantity} + ' × ' + ${item.product.name} + ' — ' + ${item.unitPrice} + ' €'"></li>
+                </ul>
+            </td>
+            <td>
+                <form th:action="@{/restaurants/{rid}/orders/{oid}/status(rid=${restaurantId}, oid=${o.id})}"
+                      method="post">
+                    <select name="status">
+                        <option th:value="${o.status}" th:text="${o.status}"></option>
+                        <option th:each="s : ${o.status.nextStates()}" th:value="${s}" th:text="${s}"></option>
+                    </select>
+                    <button type="submit">Αλλαγή</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <p><a th:href="@{/restaurants/{id}/products(id=${restaurantId})}">← Μενού</a></p>
+</main>
+</body>
+</html>

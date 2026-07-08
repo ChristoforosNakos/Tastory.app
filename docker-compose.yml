@@ -1,0 +1,15 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tastory-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: tastory_db
+      MYSQL_USER: tastory_user
+      MYSQL_PASSWORD: tastory_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - tastory_data:/var/lib/mysql
+volumes:
+  tastory_data:

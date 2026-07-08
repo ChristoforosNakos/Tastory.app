@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Εστιατόρια</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="main-container">
+
+    <section class="hero-section">
+        <h1 class="hero-title">Παράγγειλε φαγητό online</h1>
+        <div class="hero-search-bar">
+            <input type="text" id="searchInput" placeholder="Αναζήτησε εστιατόριο..." class="hero-search-input">
+            <button class="hero-search-btn" onclick="filterRestaurants()">ΑΝΑΖΗΤΗΣΗ</button>
+        </div>
+    </section>
+
+    <section class="top-restaurants-section">
+        <h2 class="section-title">Εστιατόρια</h2>
+
+        <p th:if="${#lists.isEmpty(restaurants)}">Δεν υπάρχουν εστιατόρια ακόμα.</p>
+
+        <div class="restaurant-cards-container">
+            <a class="restaurant-card" th:each="r : ${restaurants}"
+               th:href="@{/restaurants/{id}/products(id=${r.id})}">
+                <img class="card-image"
+                     th:src="@{'https://picsum.photos/seed/' + ${r.id} + '/400/250'}"
+                     alt="Εστιατόριο">
+                <div class="card-details">
+                    <h3 th:text="${r.name}">Όνομα</h3>
+                    <p class="cuisine"><i class="fas fa-map-marker-alt"></i>
+                        <span th:text="${r.address}">Διεύθυνση</span></p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<script>
+    function filterRestaurants() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('.restaurant-card').forEach(c => {
+            const name = c.querySelector('h3').innerText.toLowerCase();
+            c.style.display = name.includes(q) ? '' : 'none';
+        });
+    }
+    document.getElementById('searchInput').addEventListener('keyup', filterRestaurants);
+</script>
+
+</body>
+</html>

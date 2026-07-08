@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tastory - Σύνδεση</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="auth-wrap">
+    <div class="auth-card">
+        <h2><i class="fas fa-utensils"></i> Σύνδεση</h2>
+
+        <p th:if="${param.error != null}" class="alert alert-error">
+            <i class="fas fa-exclamation-triangle"></i> Λάθος email ή κωδικός.</p>
+        <p th:if="${param.logout != null}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i> Αποσυνδέθηκες με επιτυχία.</p>
+
+        <form th:action="@{/login}" method="post">
+            <label>Email</label>
+            <input type="text" name="username" required>
+
+            <label>Κωδικός</label>
+            <input type="password" name="password" required>
+
+            <button type="submit" class="btn-block"><i class="fas fa-sign-in-alt"></i> Σύνδεση</button>
+        </form>
+
+        <p class="auth-link">Δεν έχεις λογαριασμό; <a th:href="@{/register}">Κάνε εγγραφή</a></p>
+    </div>
+</main>
+</body>
+</html>
