@@ -1,10 +1,8 @@
-# Tastory 🍕
+# Tastory app
 
 A food-ordering web application where customers browse restaurants, view their menus and place orders, while restaurant owners manage their products and track incoming orders. Built with Spring Boot and server-side rendering (Thymeleaf).
 
 This project was developed as the final project for **Coding Factory 10 (AUEB)**.
-
----
 
 ## Features
 
@@ -14,8 +12,6 @@ This project was developed as the final project for **Coding Factory 10 (AUEB)**
 - **Restaurant grid** with a live client-side search filter.
 - Role-aware navigation and route protection (static resources and public pages are open; owner/admin actions are restricted).
 - Automatic **seed data** on first startup (admin user, a restaurant owner and 6 sample restaurants with products).
-
----
 
 ## Tech Stack
 
