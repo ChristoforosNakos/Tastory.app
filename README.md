@@ -2,7 +2,7 @@
 
 A food-ordering web application where customers browse restaurants, view their menus and place orders, while restaurant owners manage their products and track incoming orders. Built with Spring Boot and server-side rendering (Thymeleaf).
 
-This project was developed as the final project for **Coding Factory 10 (AUEB)**.
+This project was developed as the final project for **Coding Factory 9 (AUEB)**.
 
 ## Features
 
