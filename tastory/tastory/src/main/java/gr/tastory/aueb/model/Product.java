@@ -1,11 +1,18 @@
 package gr.tastory.aueb.model;
 
-
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "products")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @Id
@@ -23,45 +30,4 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
 }
-
