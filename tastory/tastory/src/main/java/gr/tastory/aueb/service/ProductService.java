@@ -31,7 +31,7 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Restaurant not found: " + restaurantId));
 
-        // 🔒 Έλεγχος ιδιοκτησίας: είναι ο συνδεδεμένος χρήστης ο owner ΑΥΤΟΥ του εστιατορίου;
+        //Έλεγχος ιδιοκτησίας: είναι ο συνδεδεμένος χρήστης ο owner ΑΥΤΟΥ του εστιατορίου;
         if (!restaurant.getOwner().getEmail().equals(ownerEmail)) {
             throw new SecurityException(
                     "You are not the owner of this restaurant");
@@ -46,14 +46,14 @@ public class ProductService {
         return productRepo.save(product);
     }
 
-    // 🗑️ DELETE — σβήνει προϊόν, με έλεγχο ιδιοκτησίας
+    // DELETE — σβήνει προϊόν, με έλεγχο ιδιοκτησίας
     public void deleteProduct(Long productId, String ownerEmail) {
 
         Product product = productRepo.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Product not found: " + productId));
 
-        // 🔒 πρώτα η ταυτότητα, μετά το συρτάρι
+        // πρώτα η ταυτότητα
         if (!product.getRestaurant().getOwner().getEmail().equals(ownerEmail)) {
             throw new SecurityException("You are not the owner of this restaurant");
         }
@@ -61,14 +61,14 @@ public class ProductService {
         productRepo.delete(product);
     }
 
-    // ✏️ UPDATE — βρίσκει ένα προϊόν (για να γεμίσει τη φόρμα edit)
+    // UPDATE:βρίσκει ένα προϊόν (για να γεμίσει τη φόρμα edit)
     public Product findById(Long productId) {
         return productRepo.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Product not found: " + productId));
     }
 
-    // ✏️ UPDATE — αποθηκεύει τις αλλαγές, με έλεγχο ιδιοκτησίας
+    //UPDATE:αποθηκεύει τις αλλαγές, με έλεγχο ιδιοκτησίας
     public Product updateProduct(Long productId, String name, BigDecimal price,
                                  String description, String ownerEmail) {
 
@@ -76,7 +76,7 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Product not found: " + productId));
 
-        // 🔒 έλεγχος ιδιοκτησίας πριν αλλάξουμε οτιδήποτε
+        //έλεγχος ιδιοκτησίας πριν αλλάξουμε οτιδήποτε
         if (!product.getRestaurant().getOwner().getEmail().equals(ownerEmail)) {
             throw new SecurityException("You are not the owner of this restaurant");
         }
