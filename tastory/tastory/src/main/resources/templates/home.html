@@ -10,11 +10,46 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
+<section class="hero-section">
+    <h1 class="hero-title">Καλώς ήρθες στο Tastory 🍽️</h1>
+    <p style="font-size:1.1rem;margin-top:10px;">Το αγαπημένο σου φαγητό, ένα κλικ μακριά.</p>
+    <a class="hero-search-btn" th:href="@{/restaurants}"
+       style="margin-top:20px;border-radius:6px;padding:14px 28px;text-decoration:none;">Δες τα εστιατόρια</a>
+</section>
+
 <main class="main-container">
-    <h1>Καλώς ήρθες στο Tastory! 🍽️</h1>
-    <p>Η εφαρμογή σου είναι έτοιμη. Δες τα εστιατόρια και παράγγειλε.</p>
-    <p><a class="hero-search-btn" style="border-radius:6px;padding:12px 24px;"
-          th:href="@{/restaurants}">Δες τα εστιατόρια</a></p>
+    <h2 class="section-title">Γιατί Tastory;</h2>
+
+    <div class="home-cards">
+        <div class="home-card">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" alt="Πίτσα">
+            <div class="home-card-text">
+                <h3>Μεγάλη ποικιλία</h3>
+                <p>Δεκάδες εστιατόρια και πιάτα για κάθε γούστο.</p>
+            </div>
+        </div>
+
+        <div class="home-card">
+            <img src="https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=600&q=80" alt="Μαγειρική">
+            <div class="home-card-text">
+                <h3>Φρέσκο φαγητό</h3>
+                <p>Παρασκευάζεται τη στιγμή της παραγγελίας σου.</p>
+            </div>
+        </div>
+
+        <div class="home-card">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" alt="Παράδοση">
+            <div class="home-card-text">
+                <h3>Εύκολη παραγγελία</h3>
+                <p>Διάλεξε, πάτα παραγγελία και παρακολούθησε την κατάστασή της.</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin:36px 0 50px;">
+        <a class="hero-search-btn" th:href="@{/restaurants}"
+           style="border-radius:6px;padding:14px 30px;text-decoration:none;display:inline-block;">Ξεκίνα την παραγγελία σου</a>
+    </div>
 </main>
 </body>
 </html>
