@@ -169,4 +169,4 @@ src/main/resources/
 
 ## Author
 
-Developed by **Christoforos Nakos** for Coding Factory 10 — Athens University of Economics and Business (AUEB).
+Developed by **Christoforos Nakos** for Coding Factory 9 — Athens University of Economics and Business (AUEB).
