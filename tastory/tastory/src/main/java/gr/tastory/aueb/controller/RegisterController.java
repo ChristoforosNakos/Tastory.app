@@ -17,14 +17,14 @@ public class RegisterController {
         this.userService = userService;
     }
 
-    // 1. Δείχνει τη φόρμα
+
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("registerDto", new RegisterDto());
         return "register";
     }
 
-    // 2. Επεξεργάζεται την υποβολή
+
     @PostMapping("/register")
     public String processRegister(@ModelAttribute RegisterDto registerDto) {
         userService.register(

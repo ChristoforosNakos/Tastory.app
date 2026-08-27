@@ -19,20 +19,20 @@ public class RestaurantController {
         this.restaurantService = restaurantService;
     }
 
-    // Λίστα όλων των εστιατορίων (δημόσια)
+
     @GetMapping("/restaurants")
     public String listRestaurants(Model model) {
         model.addAttribute("restaurants", restaurantService.getAllRestaurants());
         return "restaurants";
     }
 
-    // Φόρμα δημιουργίας (μόνο για owners)
+
     @GetMapping("/restaurants/new")
     public String showCreateForm() {
         return "restaurant-form";
     }
 
-    // Επεξεργασία δημιουργίας (μόνο για owners)
+
     @PostMapping("/restaurants/new")
     public String createRestaurant(@RequestParam String name,
                                    @RequestParam String address,

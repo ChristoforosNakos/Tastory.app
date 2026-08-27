@@ -47,7 +47,7 @@ public class ProductController {
         );
         return "redirect:/restaurants/" + restaurantId + "/products";
     }
-    // 🗑️ DELETE — σβήνει το προϊόν
+
     @PostMapping("/{productId}/delete")
     public String deleteProduct(@PathVariable Long restaurantId,
                                 @PathVariable Long productId,
@@ -56,7 +56,7 @@ public class ProductController {
         return "redirect:/restaurants/" + restaurantId + "/products";
     }
 
-    // ✏️ EDIT — δείχνει τη φόρμα με τα υπάρχοντα στοιχεία
+
     @GetMapping("/{productId}/edit")
     public String showEditForm(@PathVariable Long restaurantId,
                                @PathVariable Long productId,
@@ -74,7 +74,7 @@ public class ProductController {
         return "product-edit-form";
     }
 
-    // ✏️ EDIT — αποθηκεύει τις αλλαγές
+
     @PostMapping("/{productId}/edit")
     public String updateProduct(@PathVariable Long restaurantId,
                                 @PathVariable Long productId,
