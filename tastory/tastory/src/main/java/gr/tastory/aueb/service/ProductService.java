@@ -5,8 +5,8 @@ import gr.tastory.aueb.model.Restaurant;
 import gr.tastory.aueb.repository.ProductRepo;
 import gr.tastory.aueb.repository.RestaurantRepo;
 import org.springframework.stereotype.Service;
-import java.math.BigDecimal;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -31,10 +31,8 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Restaurant not found: " + restaurantId));
 
-        //Έλεγχος ιδιοκτησίας: είναι ο συνδεδεμένος χρήστης ο owner ΑΥΤΟΥ του εστιατορίου;
         if (!restaurant.getOwner().getEmail().equals(ownerEmail)) {
-            throw new SecurityException(
-                    "You are not the owner of this restaurant");
+            throw new SecurityException("You are not the owner of this restaurant");
         }
 
         Product product = new Product();
@@ -46,40 +44,35 @@ public class ProductService {
         return productRepo.save(product);
     }
 
-    // DELETE — σβήνει προϊόν, με έλεγχο ιδιοκτησίας
-    public void deleteProduct(Long productId, String ownerEmail) {
-
+    private Product getOwnedProduct(Long productId, Long restaurantId, String ownerEmail) {
         Product product = productRepo.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Product not found: " + productId));
 
-        // πρώτα η ταυτότητα
+        if (!product.getRestaurant().getId().equals(restaurantId)) {
+            throw new SecurityException("Product does not belong to this restaurant");
+        }
+
         if (!product.getRestaurant().getOwner().getEmail().equals(ownerEmail)) {
             throw new SecurityException("You are not the owner of this restaurant");
         }
 
+        return product;
+    }
+
+    public Product findByIdForOwner(Long productId, Long restaurantId, String ownerEmail) {
+        return getOwnedProduct(productId, restaurantId, ownerEmail);
+    }
+
+    public void deleteProduct(Long productId, Long restaurantId, String ownerEmail) {
+        Product product = getOwnedProduct(productId, restaurantId, ownerEmail);
         productRepo.delete(product);
     }
 
-    // UPDATE:βρίσκει ένα προϊόν (για να γεμίσει τη φόρμα edit)
-    public Product findById(Long productId) {
-        return productRepo.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Product not found: " + productId));
-    }
+    public Product updateProduct(Long productId, Long restaurantId, String name,
+                                 BigDecimal price, String description, String ownerEmail) {
 
-    //UPDATE:αποθηκεύει τις αλλαγές, με έλεγχο ιδιοκτησίας
-    public Product updateProduct(Long productId, String name, BigDecimal price,
-                                 String description, String ownerEmail) {
-
-        Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Product not found: " + productId));
-
-        //έλεγχος ιδιοκτησίας πριν αλλάξουμε οτιδήποτε
-        if (!product.getRestaurant().getOwner().getEmail().equals(ownerEmail)) {
-            throw new SecurityException("You are not the owner of this restaurant");
-        }
+        Product product = getOwnedProduct(productId, restaurantId, ownerEmail);
 
         product.setName(name);
         product.setPrice(price);

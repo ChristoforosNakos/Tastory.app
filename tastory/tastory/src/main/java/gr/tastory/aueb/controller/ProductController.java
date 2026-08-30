@@ -1,12 +1,12 @@
 package gr.tastory.aueb.controller;
 
 import gr.tastory.aueb.dto.ProductDto;
+import gr.tastory.aueb.model.Product;
 import gr.tastory.aueb.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import gr.tastory.aueb.model.Product;
 
 import java.security.Principal;
 
@@ -52,16 +52,16 @@ public class ProductController {
     public String deleteProduct(@PathVariable Long restaurantId,
                                 @PathVariable Long productId,
                                 Principal principal) {
-        productService.deleteProduct(productId, principal.getName());
+        productService.deleteProduct(productId, restaurantId, principal.getName());
         return "redirect:/restaurants/" + restaurantId + "/products";
     }
-
 
     @GetMapping("/{productId}/edit")
     public String showEditForm(@PathVariable Long restaurantId,
                                @PathVariable Long productId,
-                               Model model) {
-        Product product = productService.findById(productId);
+                               Model model,
+                               Principal principal) {
+        Product product = productService.findByIdForOwner(productId, restaurantId, principal.getName());
 
         ProductDto dto = new ProductDto();
         dto.setName(product.getName());
@@ -74,7 +74,6 @@ public class ProductController {
         return "product-edit-form";
     }
 
-
     @PostMapping("/{productId}/edit")
     public String updateProduct(@PathVariable Long restaurantId,
                                 @PathVariable Long productId,
@@ -82,6 +81,7 @@ public class ProductController {
                                 Principal principal) {
         productService.updateProduct(
                 productId,
+                restaurantId,
                 productDto.getName(),
                 productDto.getPrice(),
                 productDto.getDescription(),

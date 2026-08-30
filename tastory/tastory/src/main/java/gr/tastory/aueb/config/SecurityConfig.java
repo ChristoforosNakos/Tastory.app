@@ -24,11 +24,14 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**").permitAll()
                         .requestMatchers("/", "/register", "/login", "/restaurants").permitAll()
                         .requestMatchers("/restaurants/*/products/new").hasRole("RESTAURANT_OWNER")
+                        .requestMatchers("/restaurants/*/products/*/edit").hasRole("RESTAURANT_OWNER")
+                        .requestMatchers("/restaurants/*/products/*/delete").hasRole("RESTAURANT_OWNER")
                         .requestMatchers(HttpMethod.POST, "/restaurants/*/products").hasRole("RESTAURANT_OWNER")
                         .requestMatchers("/restaurants/*/products").permitAll()
                         .requestMatchers("/restaurants/new").hasRole("RESTAURANT_OWNER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
