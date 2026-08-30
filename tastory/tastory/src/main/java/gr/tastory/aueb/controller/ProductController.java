@@ -3,9 +3,11 @@ package gr.tastory.aueb.controller;
 import gr.tastory.aueb.dto.ProductDto;
 import gr.tastory.aueb.model.Product;
 import gr.tastory.aueb.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -36,8 +38,16 @@ public class ProductController {
 
     @PostMapping
     public String addProduct(@PathVariable Long restaurantId,
-                             @ModelAttribute ProductDto productDto,
+                             @Valid @ModelAttribute ProductDto productDto,
+                             BindingResult bindingResult,
+                             Model model,
                              Principal principal) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("restaurantId", restaurantId);
+            return "product-form";
+        }
+
         productService.addProduct(
                 restaurantId,
                 productDto.getName(),
@@ -77,8 +87,17 @@ public class ProductController {
     @PostMapping("/{productId}/edit")
     public String updateProduct(@PathVariable Long restaurantId,
                                 @PathVariable Long productId,
-                                @ModelAttribute ProductDto productDto,
+                                @Valid @ModelAttribute ProductDto productDto,
+                                BindingResult bindingResult,
+                                Model model,
                                 Principal principal) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("restaurantId", restaurantId);
+            model.addAttribute("productId", productId);
+            return "product-edit-form";
+        }
+
         productService.updateProduct(
                 productId,
                 restaurantId,

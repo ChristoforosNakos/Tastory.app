@@ -17,13 +17,16 @@
         <form th:action="@{/restaurants/{rid}/products/{pid}/edit(rid=${restaurantId}, pid=${productId})}"
               th:object="${productDto}" method="post">
             <label>Όνομα</label>
-            <input type="text" th:field="*{name}" required>
+            <input type="text" th:field="*{name}">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:#c0392b; font-size:0.9em;"></span>
 
             <label>Τιμή (€)</label>
-            <input type="number" th:field="*{price}" step="0.01" min="0" required>
+            <input type="number" th:field="*{price}" step="0.01">
+            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color:#c0392b; font-size:0.9em;"></span>
 
             <label>Περιγραφή</label>
             <textarea th:field="*{description}" rows="3"></textarea>
+            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:#c0392b; font-size:0.9em;"></span>
 
             <button type="submit" class="btn-block"><i class="fas fa-save"></i> Αποθήκευση</button>
         </form>
