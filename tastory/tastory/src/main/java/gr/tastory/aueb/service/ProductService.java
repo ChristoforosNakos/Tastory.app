@@ -5,9 +5,10 @@ import gr.tastory.aueb.model.Restaurant;
 import gr.tastory.aueb.repository.ProductRepo;
 import gr.tastory.aueb.repository.RestaurantRepo;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.List;
+import gr.tastory.aueb.exception.NotAuthorizedException;
+import gr.tastory.aueb.exception.ResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -28,11 +29,11 @@ public class ProductService {
                               String description, String ownerEmail) {
 
         Restaurant restaurant = restaurantRepo.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Restaurant not found: " + restaurantId));
 
         if (!restaurant.getOwner().getEmail().equals(ownerEmail)) {
-            throw new SecurityException("You are not the owner of this restaurant");
+            throw new NotAuthorizedException("You are not the owner of this restaurant");
         }
 
         Product product = new Product();
@@ -46,15 +47,15 @@ public class ProductService {
 
     private Product getOwnedProduct(Long productId, Long restaurantId, String ownerEmail) {
         Product product = productRepo.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Product not found: " + productId));
 
         if (!product.getRestaurant().getId().equals(restaurantId)) {
-            throw new SecurityException("Product does not belong to this restaurant");
+            throw new NotAuthorizedException("Product does not belong to this restaurant");
         }
 
         if (!product.getRestaurant().getOwner().getEmail().equals(ownerEmail)) {
-            throw new SecurityException("You are not the owner of this restaurant");
+            throw new NotAuthorizedException("You are not the owner of this restaurant");
         }
 
         return product;

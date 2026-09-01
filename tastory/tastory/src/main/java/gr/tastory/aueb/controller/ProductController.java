@@ -109,9 +109,6 @@ public class ProductController {
         return "redirect:/restaurants/" + restaurantId + "/products";
     }
 
-    @ExceptionHandler(SecurityException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public String handleSecurityException() {
-        return "error-403";
-    }
+
+
 }

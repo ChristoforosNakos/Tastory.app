@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tastory - Δεν βρέθηκε</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<main class="auth-wrap">
+    <div class="auth-card">
+        <h2>404 — Δεν βρέθηκε</h2>
+        <p>Το περιεχόμενο που ζητήσατε δεν υπάρχει.</p>
+        <p class="auth-link"><a th:href="@{/restaurants}">← Πίσω στα εστιατόρια</a></p>
+    </div>
+</main>
+</body>
+</html>
