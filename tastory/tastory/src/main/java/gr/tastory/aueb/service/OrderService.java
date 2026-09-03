@@ -4,7 +4,8 @@ import gr.tastory.aueb.model.*;
 import gr.tastory.aueb.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import gr.tastory.aueb.exception.NotAuthorizedException;
+import gr.tastory.aueb.exception.ResourceNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalStateException("Δεν βρέθηκε ο χρήστης"));
 
         Restaurant restaurant = restaurantRepo.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("Δεν βρέθηκε το εστιατόριο"));
+                .orElseThrow(() -> new ResourceNotFoundException("Δεν βρέθηκε το εστιατόριο"));
 
 
         Order order = new Order();
@@ -56,10 +57,10 @@ public class OrderService {
             }
 
             Product product = productRepo.findById(productId)
-                    .orElseThrow(() -> new IllegalArgumentException("Δεν βρέθηκε το προϊόν"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Δεν βρέθηκε το προϊόν"));
 
             if (!product.getRestaurant().getId().equals(restaurantId)) {
-                throw new SecurityException("Το προϊόν δεν ανήκει σε αυτό το εστιατόριο!");
+                throw new NotAuthorizedException("Το προϊόν δεν ανήκει σε αυτό το εστιατόριο!");
             }
 
             OrderItem item = new OrderItem();
@@ -81,10 +82,10 @@ public class OrderService {
     public List<Order> findOrdersForRestaurant(Long restaurantId, String ownerEmail) {
 
         Restaurant restaurant = restaurantRepo.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("Δεν βρέθηκε το εστιατόριο"));
+                .orElseThrow(() -> new ResourceNotFoundException("Δεν βρέθηκε το εστιατόριο"));
 
         if (!restaurant.getOwner().getEmail().equals(ownerEmail)) {
-            throw new SecurityException("Δεν είσαι ο ιδιοκτήτης αυτού του εστιατορίου!");
+            throw new NotAuthorizedException("Δεν είσαι ο ιδιοκτήτης αυτού του εστιατορίου!");
         }
 
         return orderRepo.findByRestaurantId(restaurantId);
@@ -94,17 +95,17 @@ public class OrderService {
     public void updateStatus(Long restaurantId, Long orderId, OrderStatus newStatus, String ownerEmail) {
 
         Order order = orderRepo.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Δεν βρέθηκε η παραγγελία"));
+                .orElseThrow(() -> new ResourceNotFoundException("Δεν βρέθηκε η παραγγελία"));
 
         if (!order.getRestaurant().getId().equals(restaurantId)) {
-            throw new SecurityException("Η παραγγελία δεν ανήκει σε αυτό το εστιατόριο!");
+            throw new NotAuthorizedException("Η παραγγελία δεν ανήκει σε αυτό το εστιατόριο!");
         }
 
         if (!order.getRestaurant().getOwner().getEmail().equals(ownerEmail)) {
-            throw new SecurityException("Δεν είσαι ο ιδιοκτήτης αυτού του εστιατορίου!");
+            throw new NotAuthorizedException("Δεν είσαι ο ιδιοκτήτης αυτού του εστιατορίου!");
         }
 
-        // ⚙️ State machine: επιτρέπεται αυτή η μετάβαση;
+
         if (!order.getStatus().canTransitionTo(newStatus)) {
             throw new IllegalStateException(
                     "Μη επιτρεπτή μετάβαση: " + order.getStatus() + " → " + newStatus);
