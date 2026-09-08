@@ -16,19 +16,16 @@
 
         <form th:action="@{/register}" th:object="${registerDto}" method="post">
             <label>Όνομα</label>
-            <input type="text" th:field="*{name}" required>
+            <input type="text" th:field="*{name}">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:#c0392b; font-size:0.9em;"></span>
 
             <label>Email</label>
-            <input type="email" th:field="*{email}" required>
+            <input type="text" th:field="*{email}">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:#c0392b; font-size:0.9em;"></span>
 
             <label>Κωδικός</label>
-            <input type="password" th:field="*{password}" required>
-
-            <label>Εγγραφή ως</label>
-            <select th:field="*{role}">
-                <option th:value="CUSTOMER">Πελάτης</option>
-                <option th:value="RESTAURANT_OWNER">Ιδιοκτήτης εστιατορίου</option>
-            </select>
+            <input type="password" th:field="*{password}">
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:#c0392b; font-size:0.9em;"></span>
 
             <button type="submit" class="btn-block"><i class="fas fa-user-plus"></i> Εγγραφή</button>
         </form>
