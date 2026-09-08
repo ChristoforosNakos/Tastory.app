@@ -7,6 +7,7 @@ import gr.tastory.aueb.model.User;
 import gr.tastory.aueb.repository.ProductRepo;
 import gr.tastory.aueb.repository.RestaurantRepo;
 import gr.tastory.aueb.repository.UserRepo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,12 @@ public class DataSeeder implements CommandLineRunner {
     private final ProductRepo productRepo;
     private final PasswordEncoder passwordEncoder;
 
+    @Value("${tastory.admin.email}")
+    private String adminEmail;
+
+    @Value("${tastory.admin.password}")
+    private String adminPassword;
+
     public DataSeeder(UserRepo userRepo, RestaurantRepo restaurantRepo,
                       ProductRepo productRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
@@ -33,14 +40,14 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) {
 
         // --- Admin ---
-        if (userRepo.findByEmail("admin@tastory.gr").isEmpty()) {
+        if (userRepo.findByEmail(adminEmail).isEmpty()) {
             User admin = new User();
-            admin.setEmail("admin@tastory.gr");
+            admin.setEmail(adminEmail);
             admin.setName("Admin");
-            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setPassword(passwordEncoder.encode(adminPassword));
             admin.setRole(Role.ADMIN);
             userRepo.save(admin);
-            System.out.println(">>> Admin user created: admin@tastory.gr");
+            System.out.println(">>> Admin user created: " + adminEmail);
         }
 
         // --- Εστιατόρια + πιάτα (μόνο αν δεν υπάρχουν ήδη) ---
